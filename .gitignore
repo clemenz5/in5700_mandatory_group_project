@@ -1,0 +1,6 @@
+/.metadata/
+#disallow framework
+inet4/
+
+#no logs please
+*.log
