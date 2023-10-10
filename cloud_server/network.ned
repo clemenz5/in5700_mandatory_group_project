@@ -1,9 +1,19 @@
-simple Host
-{
+import inet.mobility.contract.IMobility;
+import inet.mobility.single.TurtleMobility;
+
+module MobileHost  {
     parameters:
         @display("i=device/pocketpc"); // add a default icon
-    gates:
-        inout gate[2];
+	gates:
+	    inout gate[2];
+    submodules:
+        mobility: <default("StationaryMobility")> like IMobility {
+            @display("p=100,100;is=s");
+        }
+        host: Host;
+    connections:
+        host.gate[0] <--> gate[0];
+        host.gate[1] <--> gate[1];
 }
 
 simple Computer
@@ -15,7 +25,7 @@ simple Computer
 }
 
 
-simple Cloud
+simple Host
 {
     parameters:
         @display("i=misc/cloud"); // add a default icon
@@ -23,9 +33,12 @@ simple Cloud
         inout gate[2];
 }
 
-module Library
+simple Cloud
 {
-	@display(p=580,425);
+    parameters:
+        @display("i=misc/cloud"); // add a default icon
+    gates:
+        inout gate[2];
 }
 
 
@@ -54,15 +67,16 @@ network cloudComputingNetwork
         cloud: Cloud {
             @display("p=900,100;r=480");
         }
-        host: Host {
+        host: MobileHost {
             @display("p=500,500;r=70");
         }
         computer: Computer {
             @display("p=500,315;r=140");
+            @display("i=device/pc");
         }
 
-    connections:
-        host.gate[0] <--> Channel <--> cloud.gate[0];
+    connections allowunconnected:
+	    host.gate[0] <--> Channel <--> cloud.gate[0];
         host.gate[1] <--> Channel <--> computer.gate[1];
         computer.gate[0] <--> Channel <--> cloud.gate[1];
 }
