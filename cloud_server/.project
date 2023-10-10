@@ -3,6 +3,7 @@
 	<name>cloud_server</name>
 	<comment></comment>
 	<projects>
+		<project>inet4</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -35,4 +36,10 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>org.omnetpp.main.omnetppnature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>inet</name>
+			<value>file:/home/clemenz/projects/in5700_mandatory_group_project/inet4</value>
+		</variable>
+	</variableList>
 </projectDescription>
