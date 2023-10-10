@@ -1,0 +1,11 @@
+<environment>
+  <!-- shapes and materials -->
+  <shape id="1" type="sphere" radius="10"/>
+  <shape id="2" type="cuboid" size="200 300 400"/>
+  <shape id="3" type="prism" height="10" points="0 0 10 0 10 10 0 10"/>
+  <shape id="4" type="polyhedron" points="0 0 0 10 0 0 10 10 0 0 10 0 ..."/>
+  <material id="1" resistivity="10" relativePermittivity="4.5"/>
+  <!-- an object that uses a previously defined shape and material -->
+  <object position="min 10 20 0" orientation="45 0 0" shape="2"/>
+  <!-- an object defined with an in-line shape -->
+</environment>
