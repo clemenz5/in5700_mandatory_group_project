@@ -34,10 +34,11 @@ PROJECTRELATIVE_PATH =
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
-OBJS = $O/Cloud.o $O/Computer.o $O/Host.o
+OBJS = $O/Cloud.o $O/Computer.o $O/Host.o $O/ComputerMessage_m.o
 
 # Message files
-MSGFILES =
+MSGFILES = \
+    ComputerMessage.msg
 
 # SM files
 SMFILES =

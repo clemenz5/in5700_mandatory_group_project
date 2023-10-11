@@ -5,6 +5,7 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 
 module MobileHost  {
     parameters:
+        bool left = default(false);
         @display("i=device/pocketpc"); // add a default icon
 	gates:
 	    inout gate[2];
@@ -14,8 +15,8 @@ module MobileHost  {
         }
         host: Host;
     connections:
-        host.gate[0] <--> gate[0];
-        host.gate[1] <--> gate[1];
+        host.gate[0] <-->  gate[0];
+        host.gate[1] <-->  gate[1];
 }
 
 simple Computer
@@ -38,6 +39,7 @@ simple Host
 simple Cloud
 {
     parameters:
+        bool left = default(false);
         @display("i=misc/cloud"); // add a default icon
     gates:
         inout gate[2];
@@ -79,7 +81,7 @@ network cloudComputingNetwork
             @display("p=50,50");
         }
 
-    connections allowunconnected:
+    connections:
 	    host.gate[0] <--> Channel <--> cloud.gate[0];
         host.gate[1] <--> Channel <--> computer.gate[1];
         computer.gate[0] <--> Channel <--> cloud.gate[1];
