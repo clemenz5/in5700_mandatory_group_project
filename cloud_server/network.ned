@@ -1,5 +1,7 @@
 import inet.mobility.contract.IMobility;
 import inet.mobility.single.TurtleMobility;
+import inet.visualizer.integrated.IntegratedVisualizer;
+
 
 module MobileHost  {
     parameters:
@@ -71,8 +73,10 @@ network cloudComputingNetwork
             @display("p=500,500;r=70");
         }
         computer: Computer {
-            @display("p=500,315;r=140");
-            @display("i=device/pc");
+            @display("p=500,315;r=110");
+        }
+        visualizer: IntegratedVisualizer {
+            @display("p=50,50");
         }
 
     connections allowunconnected:
