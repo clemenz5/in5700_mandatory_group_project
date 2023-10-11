@@ -79,7 +79,7 @@ network cloudComputingNetwork
             @display("p=50,50");
         }
 
-    connections allowunconnected:
+    connections:
 	    host.gate[0] <--> Channel <--> cloud.gate[0];
         host.gate[1] <--> Channel <--> computer.gate[1];
         computer.gate[0] <--> Channel <--> cloud.gate[1];

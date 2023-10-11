@@ -1,6 +1,7 @@
 #include <omnetpp.h>
 
 using namespace omnetpp;
+#include <ComputerMessage_m.h>
 
 class Computer: public cSimpleModule {
 private:
@@ -17,6 +18,7 @@ protected:
 Define_Module(Computer);
 
 void Computer::initialize() {
+    send(new ComputerMsg("1- Contents of Book Table"), "gate$o", 0);
 }
 
 void Computer::handleMessage(cMessage *msg) {
