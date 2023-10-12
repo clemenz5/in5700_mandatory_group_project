@@ -1,4 +1,5 @@
 #include <omnetpp.h>
+#include <ComputerMessage_m.h>
 
 using namespace omnetpp;
 
@@ -22,6 +23,9 @@ void Cloud::initialize() {
 }
 
 void Cloud::handleMessage(cMessage *msg) {
+    if (strcmp(msg->getName(), "1- Contents of Book Table") == 0) {
+            send(new ComputerMsg("2- ACK"), "gate$o", 0);
+        }
 
 }
 

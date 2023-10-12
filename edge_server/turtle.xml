@@ -3,26 +3,38 @@
     <movement id="1">
         <!-- draw a square -->
         <set speed="20" x="500" y="500"/>
+        <wait t="6"/>
         <moveto x="460" y="500"/>
         <moveto x="460" y="260"/>
         <moveto x="300" y="260"/>
         <moveto x="300" y="450"/>
         
+        <wait t="2"/>
+        
 		<moveto x="300" y="260"/>
       	<moveto x="460" y="260"/>
+      	
+      	<wait t="3"/>
+      	
       	<moveto x="460" y="500"/>
 
     </movement>
 
     <movement id="2">
         <set speed="20" x="500" y="500"/>
+        <wait t="6"/>
         <moveto x="540" y="500"/>
         <moveto x="540" y="260"/>
         <moveto x="700" y="260"/>
         <moveto x="700" y="450"/>
         
+        <wait t="2"/>
+        
         <moveto x="700" y="260"/>
         <moveto x="540" y="260"/>
+        
+        <wait t="3"/>
+        
         <moveto x="540" y="500"/>
     </movement>
 
