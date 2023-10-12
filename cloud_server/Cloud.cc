@@ -1,6 +1,5 @@
 #include <omnetpp.h>
 #include <ComputerMessage_m.h>
-#include <string>
 
 using namespace omnetpp;
 
