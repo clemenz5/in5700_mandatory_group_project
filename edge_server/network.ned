@@ -7,7 +7,7 @@ module MobileHost  {
     parameters:
         @display("i=device/pocketpc"); // add a default icon
 	gates:
-	    inout gate[2];
+	    inout gate[1];
     submodules:
         mobility: <default("StationaryMobility")> like IMobility {
             @display("p=100,100;is=s");
@@ -15,12 +15,12 @@ module MobileHost  {
         host: Host;
     connections:
         host.gate[0] <--> gate[0];
-        host.gate[1] <--> gate[1];
 }
 
 simple Computer
 {
     parameters:
+        bool left = default(false);
         @display("i=device/pc"); // add a default icon
     gates:
         inout gate[2];
@@ -32,7 +32,7 @@ simple Host
     parameters:
         @display("i=misc/cloud"); // add a default icon
     gates:
-        inout gate[2];
+        inout gate[1];
 }
 
 simple Cloud
@@ -40,7 +40,7 @@ simple Cloud
     parameters:
         @display("i=misc/cloud"); // add a default icon
     gates:
-        inout gate[2];
+        inout gate[1];
 }
 
 
@@ -80,7 +80,6 @@ network edgeComputingNetwork
         }
 
     connections allowunconnected:
-	    host.gate[0] <--> Channel <--> cloud.gate[0];
-        host.gate[1] <--> Channel <--> computer.gate[1];
-        computer.gate[0] <--> Channel <--> cloud.gate[1];
+	    computer.gate[0] <--> Channel <--> host.gate[0];
+        computer.gate[1] <--> Channel <--> cloud.gate[0];
 }
