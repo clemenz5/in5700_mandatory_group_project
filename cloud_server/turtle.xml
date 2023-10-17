@@ -2,76 +2,39 @@
 <movements>
     <movement id="1">
         <!-- draw a square -->
-        <set speed="20" x="500" y="500"/>
+        <set speed="20" x="800" y="500"/>
         <wait t="6"/>
-        <moveto x="460" y="500"/>
-        <moveto x="460" y="260"/>
-        <moveto x="300" y="260"/>
-        <moveto x="300" y="450"/>
+        <moveto x="760" y="500"/>
+        <moveto x="760" y="260"/>
+        <moveto x="600" y="260"/>
+        <moveto x="600" y="450"/>
         
         <wait t="2"/>
         
-		<moveto x="300" y="260"/>
-      	<moveto x="460" y="260"/>
+		<moveto x="600" y="260"/>
+      	<moveto x="760" y="260"/>
       	
       	<wait t="3"/>
       	
-      	<moveto x="460" y="500"/>
+      	<moveto x="760" y="500"/>
 
     </movement>
 
     <movement id="2">
-        <set speed="20" x="500" y="500"/>
+        <set speed="20" x="800" y="500"/>
         <wait t="6"/>
-        <moveto x="540" y="500"/>
-        <moveto x="540" y="260"/>
-        <moveto x="700" y="260"/>
-        <moveto x="700" y="450"/>
+        <moveto x="840" y="500"/>
+        <moveto x="840" y="260"/>
+        <moveto x="1000" y="260"/>
+        <moveto x="1000" y="450"/>
         
         <wait t="2"/>
         
-        <moveto x="700" y="260"/>
-        <moveto x="540" y="260"/>
+        <moveto x="1000" y="260"/>
+        <moveto x="840" y="260"/>
         
         <wait t="3"/>
         
-        <moveto x="540" y="500"/>
+        <moveto x="840" y="500"/>
     </movement>
-
-    <movement id="3">
-        <!-- Random Waypoint -->
-        <repeat>
-            <set speed="uniform(20,60)"/>
-            <moveto x="uniform(0,$MAXX)" y="uniform(0,$MAXY)"/>
-            <wait t="uniform(0,10)"/>
-        </repeat>
-    </movement>
-
-    <movement id="4">
-        <!-- MassMobility with "reflect" border policy -->
-        <repeat>
-            <set speed="uniform(10,20)" borderPolicy="reflect"/>
-            <turn angle="uniform(-30,30)"/>
-            <forward t="uniform(0.1,1)"/>
-        </repeat>
-    </movement>
-
-    <movement id="5">
-        <!-- MassMobility with "wrap" border policy -->
-        <repeat>
-            <set speed="uniform(10,20)" borderPolicy="wrap"/>
-            <turn angle="uniform(-30,30)"/>
-            <forward t="uniform(0.1,1)"/>
-        </repeat>
-    </movement>
-
-    <movement id="6">
-        <!-- MassMobility with "placerandomly" border policy -->
-        <repeat>
-            <set speed="uniform(10,20)" borderPolicy="placerandomly"/>
-            <turn angle="uniform(-30,30)"/>
-            <forward t="uniform(0.1,1)"/>
-        </repeat>
-    </movement>
-
 </movements>
