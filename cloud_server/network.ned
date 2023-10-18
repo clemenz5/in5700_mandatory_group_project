@@ -84,7 +84,7 @@ network cloudComputingNetwork
 	@figure[total_delay_rcvd_cloud_to_smart](type=text; pos=18,535; text=cloud (from cloud to smartphone): N/A);
 	@figure[total_delay_rcvd_cloud_to_comp](type=text; pos=18,550; text=cloud (from cloud to computer): N/A);
 	@figure[total_delay_rcvd_comp_to_smart](type=text; pos=18,565; text=computer (from computer to smartphone): N/A);
-	@figure[total_delay_rcvd_comp_tp_cloud](type=text; pos=18,580; text=computer (from computer to cloud): N/A);
+	@figure[total_delay_rcvd_comp_to_cloud](type=text; pos=18,580; text=computer (from computer to cloud): N/A);
 	@figure[total_delay_rcvd_smart_to_cloud](type=text; pos=18,595; text=smartphone (from smartphone to cloud): N/A);
 	@figure[total_delay_rcvd_smart_to_comp](type=text; pos=18,610; text=smartphone (from smartphone to computer): N/A);
     
