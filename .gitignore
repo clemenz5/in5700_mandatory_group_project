@@ -4,3 +4,6 @@ inet4/
 
 #no logs please
 *.log
+
+#no vscode nonsense
+.vscode
