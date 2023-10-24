@@ -49,13 +49,13 @@ void Host::initialize() {
     WATCH(numReceivedComp);
     WATCH(numDropped);
 
-    sendMessagePower[0] = 300;
-    sendMessagePower[1] = 300;
+    sendMessagePower[0] = 476;
+    sendMessagePower[1] = 455;
 
-    receiveMessagePower[0] = 250;
-    receiveMessagePower[1] = 250;
+    receiveMessagePower[0] = 423;
+    receiveMessagePower[1] = 333;
 
-    messageDelay= 100;
+    messageDelay= 143;
 
     left = this->getParentModule()->par("left").boolValue();
     scheduleAt(simTime() + 38.0, new cMessage("browseBook"));

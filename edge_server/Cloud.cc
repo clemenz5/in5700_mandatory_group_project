@@ -45,13 +45,13 @@ void Cloud::initialize() {
     numReceivedComp = 0;
     numReceivedSmart = 0;
 
-    sendMessagePower[0] = 200;
-    sendMessagePower[1] = 100;
+    sendMessagePower[0] = 210;
+    sendMessagePower[1] = 130;
 
-    receiveMessagePower[0] = 300;
-    receiveMessagePower[1] = 300;
+    receiveMessagePower[0] = 280;
+    receiveMessagePower[1] = 330;
 
-    messageDelay = 100;
+    messageDelay = 120;
 
     cCanvas* canvas = this->getParentModule()->getCanvas();
 
