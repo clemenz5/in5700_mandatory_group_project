@@ -2,7 +2,7 @@
 <movements>
     <movement id="1">
         <!-- draw a square -->
-        <set speed="80" x="800" y="500"/>
+        <set speed="20" x="800" y="500"/>
         <wait t="6"/>
         <moveto x="760" y="500"/>
         <moveto x="760" y="260"/>

@@ -43,14 +43,14 @@ void Computer::initialize() {
     numReceivedSmart = 0;
     numReceivedCloud = 0;
 
-    sendMessagePower[0] = 300;
-    sendMessagePower[1] = 200;
+    sendMessagePower[0] = 333;
+    sendMessagePower[1] = 187;
 
-    receiveMessagePower[0] = 300;
-    receiveMessagePower[1] = 300;
+    receiveMessagePower[0] = 289;
+    receiveMessagePower[1] = 314;
 
 
-    messageDelay = 100;
+    messageDelay = 98;
 
     cCanvas* canvas = this->getParentModule()->getCanvas();
 
