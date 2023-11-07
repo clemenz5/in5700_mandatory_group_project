@@ -1,10 +1,10 @@
-#include <omnetpp.h>
 #include <ComputerMessage_m.h>
+#include <omnetpp.h>
 
 using namespace omnetpp;
 
-class Cloud: public cSimpleModule {
-private:
+class Cloud : public cSimpleModule {
+   private:
     bool waiting_for_ACK;
     bool left;
     char displayString[20];
@@ -26,12 +26,12 @@ private:
     cLabelFigure* total_delay_rcvd_cloud_to_smart;
     cLabelFigure* total_delay_rcvd_cloud_to_comp;
 
-protected:
+   protected:
     // The following redefined virtual function holds the algorithm.
     virtual void initialize() override;
-    virtual void handleMessage(cMessage *msg) override;
+    virtual void handleMessage(cMessage* msg) override;
     virtual void finish() override;
-    virtual void send(cMessage *msg, const char *gatename, int gateindex=-1) override;
+    virtual void send(cMessage* msg, const char* gatename, int gateindex = -1) override;
     void updateLabels();
 };
 
@@ -45,32 +45,38 @@ void Cloud::initialize() {
     numReceivedComp = 0;
     numReceivedSmart = 0;
 
-    sendMessagePower[0] = 234;
-    sendMessagePower[1] = 112;
+    /* sendMessagePower[0] = 234;  // sent by smartphone
+    sendMessagePower[1] = 112;  // sent by computer
 
-    receiveMessagePower[0] = 431;
-    receiveMessagePower[1] = 352;
+    receiveMessagePower[0] = 431;  // received by smartphone
+    receiveMessagePower[1] = 352;  // received by computer */
+
+    sendMessagePower[0] = par("sendMessagePowerSmart").intValue();
+    sendMessagePower[1] = par("sendMessagePowerComputer").intValue();
+
+    receiveMessagePower[0] = par("receiveMessagePowerSmart").intValue();
+    receiveMessagePower[1] = par("receiveMessagePowerComputer").intValue();
 
     messageDelay = 132;
 
     cCanvas* canvas = this->getParentModule()->getCanvas();
 
-    total_num_cloud= (cLabelFigure*)(canvas->getFigure("total_num_cloud"));
-    total_power_cloud_to_smart= (cLabelFigure*)(canvas->getFigure("total_power_cloud_to_smart"));
-    total_power_cloud_to_comp= (cLabelFigure*)(canvas->getFigure("total_power_cloud_to_comp"));
-    total_power_rcvd_cloud_to_smart= (cLabelFigure*)(canvas->getFigure("total_power_rcvd_cloud_to_smart"));
-    total_power_rcvd_cloud_to_comp= (cLabelFigure*)(canvas->getFigure("total_power_rcvd_cloud_to_comp"));
+    total_num_cloud = (cLabelFigure*)(canvas->getFigure("total_num_cloud"));
+    total_power_cloud_to_smart = (cLabelFigure*)(canvas->getFigure("total_power_cloud_to_smart"));
+    total_power_cloud_to_comp = (cLabelFigure*)(canvas->getFigure("total_power_cloud_to_comp"));
+    total_power_rcvd_cloud_to_smart = (cLabelFigure*)(canvas->getFigure("total_power_rcvd_cloud_to_smart"));
+    total_power_rcvd_cloud_to_comp = (cLabelFigure*)(canvas->getFigure("total_power_rcvd_cloud_to_comp"));
 
-    total_delay_cloud_to_smart= (cLabelFigure*)(canvas->getFigure("total_delay_cloud_to_smart"));
-    total_delay_cloud_to_comp= (cLabelFigure*)(canvas->getFigure("total_delay_cloud_to_comp"));
-    total_delay_rcvd_cloud_to_smart= (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_cloud_to_smart"));
-    total_delay_rcvd_cloud_to_comp= (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_cloud_to_comp"));
+    total_delay_cloud_to_smart = (cLabelFigure*)(canvas->getFigure("total_delay_cloud_to_smart"));
+    total_delay_cloud_to_comp = (cLabelFigure*)(canvas->getFigure("total_delay_cloud_to_comp"));
+    total_delay_rcvd_cloud_to_smart = (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_cloud_to_smart"));
+    total_delay_rcvd_cloud_to_comp = (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_cloud_to_comp"));
     updateLabels();
 }
 
-void Cloud::handleMessage(cMessage *msg) {
+void Cloud::handleMessage(cMessage* msg) {
     if (!msg->isSelfMessage()) {
-        if(msg->getArrivalGateId()==1048576){
+        if (msg->getArrivalGateId() == 1048576) {
             numReceivedSmart++;
         } else {
             numReceivedComp++;
@@ -88,8 +94,7 @@ void Cloud::handleMessage(cMessage *msg) {
             scheduleAt(simTime() + 1.0, new cMessage("timeoutEvent"));
             send(new ComputerMsg("3- Cloud ready to start"), "gate$o", 0);
         }
-    } else if (strcmp(msg->getName(), "5- Where is the book I am looking for?")
-            == 0) {
+    } else if (strcmp(msg->getName(), "5- Where is the book I am looking for?") == 0) {
         waiting_for_ACK = false;
         if (left) {
             send(new ComputerMsg("6- ACK"), "gate$o", 0);
@@ -103,38 +108,38 @@ void Cloud::handleMessage(cMessage *msg) {
     }
 }
 
-void Cloud::updateLabels(){
-    sprintf(displayString, "sent:%d rcvd:%d", numSentComp+numSentSmart, numReceivedComp+numReceivedSmart);
+void Cloud::updateLabels() {
+    sprintf(displayString, "sent:%d rcvd:%d", numSentComp + numSentSmart, numReceivedComp + numReceivedSmart);
     this->getDisplayString().setTagArg("t", 0,
-                displayString);
+                                       displayString);
 
     char temp[100];
-    sprintf(temp, "Total number of messages sent/received by the cloud= %d", numSentComp+numSentSmart+numReceivedComp+numReceivedSmart);
+    sprintf(temp, "Total number of messages sent/received by the cloud= %d", numSentComp + numSentSmart + numReceivedComp + numReceivedSmart);
     total_num_cloud->setText(temp);
-    sprintf(temp, "cloud (from cloud to smartphone)= %d", numSentSmart*sendMessagePower[0]);
+    sprintf(temp, "cloud (from cloud to smartphone)= %d", numSentSmart * sendMessagePower[0]);
     total_power_cloud_to_smart->setText(temp);
-    sprintf(temp, "cloud (from cloud to comp)= %d", numSentComp*sendMessagePower[1]);
+    sprintf(temp, "cloud (from cloud to comp)= %d", numSentComp * sendMessagePower[1]);
     total_power_cloud_to_comp->setText(temp);
 
-    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart*receiveMessagePower[0]);
+    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart * receiveMessagePower[0]);
     total_power_rcvd_cloud_to_smart->setText(temp);
-    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*receiveMessagePower[1]);
+    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp * receiveMessagePower[1]);
     total_power_rcvd_cloud_to_comp->setText(temp);
 
-    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart*messageDelay);
+    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart * messageDelay);
     total_delay_cloud_to_smart->setText(temp);
-    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*messageDelay);
+    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp * messageDelay);
     total_delay_cloud_to_comp->setText(temp);
 
-    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart*messageDelay);
+    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart * messageDelay);
     total_delay_rcvd_cloud_to_smart->setText(temp);
-    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*messageDelay);
+    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp * messageDelay);
     total_delay_rcvd_cloud_to_comp->setText(temp);
 }
 
-void Cloud::send(cMessage *msg, const char *gatename, int gateindex){
+void Cloud::send(cMessage* msg, const char* gatename, int gateindex) {
     cSimpleModule::send(msg, gatename, gateindex);
-    if(gateindex==0){
+    if (gateindex == 0) {
         numSentSmart++;
     } else {
         numSentComp++;

@@ -23,6 +23,11 @@ simple Computer
 {
     parameters:
         @display("i=device/pc"); // add a default icon
+        int sendMessagePowerSmart = default(0);
+        int sendMessagePowerCloud = default(0);
+        int receiveMessagePowerSmart = default(0);
+        int receiveMessagePowerCloud = default(0);
+        int messageDelay = default(0);
     gates:
         inout gate[2];
 }
@@ -32,6 +37,11 @@ simple Host
 {
     parameters:
         @display("i=misc/cloud"); // add a default icon
+        int sendMessagePowerCloud = default(0);
+        int sendMessagePowerComp = default(0);
+        int receiveMessagePowerCloud = default(0);
+        int receiveMessagePowerComp = default(0);
+        int messageDelay = default(0);
     gates:
         inout gate[2];
 }
@@ -39,8 +49,13 @@ simple Host
 simple Cloud
 {
     parameters:
-        bool left = default(false);
         @display("i=misc/cloud"); // add a default icon
+        bool left = default(false);
+        int sendMessagePowerSmart = default(0);
+        int sendMessagePowerComputer = default(0);
+        int receiveMessagePowerSmart = default(0);
+        int receiveMessagePowerComputer = default(0);
+        int messageDelay = default(0);
     gates:
         inout gate[2];
 }
@@ -91,8 +106,7 @@ network cloudComputingNetwork
     
     
     @figure[Library](type=rectangle; pos=500,200; size=600,350; fillColor=gray; fillOpacity=0.2; zIndex=1);
-
-
+    @figure[Library.label](type=text; pos=510,210; text=Library);
     
     @figure[Pillar1](type=rectangle; pos=700,300; size=20,250; fillColor=black; fillOpacity=1);
     @figure[Library.label_p1](type=text; pos=705,310; text=P; zIndex=10;color=white);
@@ -101,6 +115,7 @@ network cloudComputingNetwork
     @figure[Library.label_l4](type=text; pos=705,439; text=L; zIndex=10;color=white);
     @figure[Library.label_a1](type=text; pos=705,482; text=A; zIndex=10;color=white);
     @figure[Library.label_r1](type=text; pos=705,526; text=R; zIndex=10;color=white);
+
     @figure[Shelf1](type=rectangle; pos=660,300; size=40,250; fillColor=white; fillOpacity=0.8);
     @figure[Library.label_s1](type=text; pos=675,310; text=S; zIndex=10);
     @figure[Library.label_h1](type=text; pos=675,364; text=H);
@@ -108,22 +123,22 @@ network cloudComputingNetwork
     @figure[Library.label_l1](type=text; pos=675,472; text=L);
     @figure[Library.label_f1](type=text; pos=675,526; text=F);
     
-    
-    
     @figure[Pillar2](type=rectangle; pos=890,300; size=20,250; fillColor=black; fillOpacity=1);
-    @figure[Pillar2.label](type=text; pos=510,210; text=Library);
+    //@figure[Pillar2.label](type=text; pos=510,210; text=Library);
     @figure[Library.label_p2](type=text; pos=896,310; text=P; zIndex=10;color=white);
     @figure[Library.label_i2](type=text; pos=896,353; text=I; zIndex=10;color=white);
     @figure[Library.label_l5](type=text; pos=896,396; text=L; zIndex=10;color=white);
     @figure[Library.label_l6](type=text; pos=896,439; text=L; zIndex=10;color=white);
     @figure[Library.label_a2](type=text; pos=896,482; text=A; zIndex=10;color=white);
     @figure[Library.label_r2](type=text; pos=896,526; text=R; zIndex=10;color=white);
+
     @figure[Shelf2](type=rectangle; pos=910,300; size=40,250; fillColor=white; fillOpacity=0.8);
     @figure[Library.label_s2](type=text; pos=923,310; text=S; zIndex=10);
     @figure[Library.label_h2](type=text; pos=923,364; text=H);
     @figure[Library.label_e2](type=text; pos=923,418; text=E);
     @figure[Library.label_l2](type=text; pos=923,472; text=L);
     @figure[Library.label_f2](type=text; pos=923,526; text=F);
+    
     types:
         channel Channel extends ned.DelayChannel
         {
