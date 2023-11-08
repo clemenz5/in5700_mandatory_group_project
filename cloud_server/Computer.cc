@@ -12,7 +12,8 @@ class Computer : public cSimpleModule {
     int numReceivedSmart;
     int sendMessagePower[2];
     int receiveMessagePower[2];
-    int messageDelay;
+    int sendMessageDelay[2];
+    int receiveMessageDelay[2];
     cLabelFigure* total_num_comp;
 
     cLabelFigure* total_power_comp_to_cloud;
@@ -42,13 +43,17 @@ void Computer::initialize() {
     numReceivedSmart = 0;
     numReceivedCloud = 0;
 
-    sendMessagePower[0] = par("sendMessagePowerCloud").intValue();
-    sendMessagePower[1] = par("sendMessagePowerSmart").intValue();
+    sendMessagePower[0] = par("sendMessagePowerSmart").intValue();
+    sendMessagePower[1] = par("sendMessagePowerCloud").intValue();
 
     receiveMessagePower[0] = par("receiveMessagePowerSmart").intValue();
     receiveMessagePower[1] = par("receiveMessagePowerCloud").intValue();
 
-    messageDelay = par("messageDelay").intValue();
+    sendMessageDelay[0] = par("sendMessageDelaySmart").intValue();
+    sendMessageDelay[1] = par("sendMessageDelayCloud").intValue();
+
+    receiveMessageDelay[0] = par("receiveMessageDelaySmart").intValue();
+    receiveMessageDelay[1] = par("receiveMessageDelayCloud").intValue();
 
     cCanvas* canvas = this->getParentModule()->getCanvas();
 
@@ -92,9 +97,9 @@ void Computer::updateLabels() {
     sprintf(temp, "Total number of messages sent/received by the computer= %d", numSentSmart + numSentCloud + numReceivedSmart + numReceivedCloud);
     total_num_comp->setText(temp);
 
-    sprintf(temp, "computer (from computer to cloud)= %d", numSentCloud * sendMessagePower[0]);
+    sprintf(temp, "computer (from computer to cloud)= %d", numSentCloud * sendMessagePower[1]);
     total_power_comp_to_cloud->setText(temp);
-    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessagePower[1]);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessagePower[0]);
     total_power_comp_to_smart->setText(temp);
 
     sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * receiveMessagePower[0]);
@@ -102,14 +107,14 @@ void Computer::updateLabels() {
     sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * receiveMessagePower[1]);
     total_power_rcvd_comp_to_cloud->setText(temp);
 
-    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * messageDelay);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessageDelay[0]);
     total_delay_comp_to_smart->setText(temp);
-    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * messageDelay);
+    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * sendMessageDelay[1]);
     total_delay_comp_to_cloud->setText(temp);
 
-    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * messageDelay);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * receiveMessageDelay[0]);
     total_delay_rcvd_comp_to_smart->setText(temp);
-    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * messageDelay);
+    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * receiveMessageDelay[1]);
     total_delay_rcvd_comp_to_cloud->setText(temp);
 }
 
