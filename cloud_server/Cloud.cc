@@ -5,15 +5,15 @@ using namespace omnetpp;
 
 class Cloud : public cSimpleModule {
    private:
-    bool waiting_for_ACK;
-    bool left;
-    char displayString[20];
-    int numSentSmart;
-    int numSentComp;
-    int numReceivedSmart;
-    int numReceivedComp;
-    int sendMessagePower[2];
-    int receiveMessagePower[2];
+    bool waiting_for_ACK; //boolean which is false in the beginning. will get true when waiting for an acknowlegement message
+    bool left; //boolean variable which tells wether to walk left or right
+    char displayString[20]; //the string which is displayed above the actor
+    int numSentSmart; //amount of messages sent to the smartphone
+    int numSentComp; //amount of messages sent to the computer
+    int numReceivedSmart; //amount of messages received from the smartphone
+    int numReceivedComp; //amount of messages received by the computer
+    int sendMessagePower[2]; //power needed to send messages on gate 0 and 1
+    int receiveMessagePower[2]; //power needed to receive messages on gate 0 and 1
     int messageDelay;
 
     cLabelFigure* total_num_cloud;
