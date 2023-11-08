@@ -14,7 +14,8 @@ class Host : public cSimpleModule {
     int numReceivedComp;
     int sendMessagePower[2];
     int receiveMessagePower[2];
-    int messageDelay;
+    int sendMessageDelay[2];
+    int receiveMessageDelay[2];
     cLabelFigure* total_num_smartphone;
     cLabelFigure* total_power_smart_to_cloud;
     cLabelFigure* total_power_smart_to_comp;
@@ -50,7 +51,11 @@ void Host::initialize() {
     receiveMessagePower[0] = par("receiveMessagePowerCloud").intValue();
     receiveMessagePower[1] = par("receiveMessagePowerComp").intValue();
 
-    messageDelay = par("messageDelay").intValue();
+    sendMessageDelay[0] = par("sendMessageDelayCloud").intValue();
+    sendMessageDelay[1] = par("sendMessageDelayComp").intValue();
+
+    receiveMessageDelay[0] = par("receiveMessageDelayCloud").intValue();
+    receiveMessageDelay[1] = par("receiveMessageDelayComp").intValue();
 
     left = this->getParentModule()->par("left").boolValue();
     scheduleAt(simTime() + 38.0, new cMessage("browseBook"));
@@ -120,14 +125,14 @@ void Host::updateLabels() {
     sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * receiveMessagePower[1]);
     total_power_rcvd_smart_to_comp->setText(temp);
 
-    sprintf(temp, "smartphone (from smartphone to cloud)= %d", (numReceivedCloud - numDropped) * messageDelay);
+    sprintf(temp, "smartphone (from smartphone to cloud)= %d", numSentCloud * sendMessageDelay[0]);
     total_delay_smart_to_cloud->setText(temp);
-    sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * messageDelay);
+    sprintf(temp, "smartphone (from smartphone to comp)= %d", numSentComp * sendMessageDelay[1]);
     total_delay_smart_to_comp->setText(temp);
 
-    sprintf(temp, "smartphone (from smartphone to cloud)= %d", (numReceivedCloud - numDropped) * messageDelay);
+    sprintf(temp, "smartphone (from smartphone to cloud)= %d", numReceivedCloud * receiveMessageDelay[0]);
     total_delay_rcvd_smart_to_cloud->setText(temp);
-    sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * messageDelay);
+    sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * receiveMessageDelay[1]);
     total_delay_rcvd_smart_to_comp->setText(temp);
 }
 

@@ -27,7 +27,10 @@ simple Computer
         int sendMessagePowerCloud = default(0);
         int receiveMessagePowerSmart = default(0);
         int receiveMessagePowerCloud = default(0);
-        int messageDelay = default(0);
+        int sendMessageDelaySmart = default(0);
+        int sendMessageDelayCloud = default(0);
+        int receiveMessageDelaySmart = default(0);
+        int receiveMessageDelayCloud = default(0);
     gates:
         inout gate[2];
 }
@@ -41,7 +44,10 @@ simple Host
         int sendMessagePowerComp = default(0);
         int receiveMessagePowerCloud = default(0);
         int receiveMessagePowerComp = default(0);
-        int messageDelay = default(0);
+        int sendMessageDelayCloud = default(0);
+        int sendMessageDelayComp = default(0);
+        int receiveMessageDelayCloud = default(0);
+        int receiveMessageDelayComp = default(0);
     gates:
         inout gate[2];
 }
@@ -55,7 +61,10 @@ simple Cloud
         int sendMessagePowerComputer = default(0);
         int receiveMessagePowerSmart = default(0);
         int receiveMessagePowerComputer = default(0);
-        int messageDelay = default(0);
+        int sendMessageDelaySmart = default(0);
+        int sendMessageDelayComputer = default(0);
+        int receiveMessageDelaySmart = default(0);
+        int receiveMessageDelayComputer = default(0);
     gates:
         inout gate[2];
 }
