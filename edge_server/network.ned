@@ -23,6 +23,14 @@ simple Computer
     parameters:
         bool left = default(false);
         @display("i=device/pc"); // add a default icon
+        int sendMessagePowerSmart = default(0);
+        int sendMessagePowerCloud = default(0);
+        int receiveMessagePowerSmart = default(0);
+        int receiveMessagePowerCloud = default(0);
+        int sendMessageDelaySmart = default(0);
+        int sendMessageDelayCloud = default(0);
+        int receiveMessageDelaySmart = default(0);
+        int receiveMessageDelayCloud = default(0);
     gates:
         inout gate[2];
 }
@@ -32,6 +40,14 @@ simple Host
 {
     parameters:
         @display("i=misc/cloud"); // add a default icon
+        int sendMessagePowerCloud = default(0);
+        int sendMessagePowerComp = default(0);
+        int receiveMessagePowerCloud = default(0);
+        int receiveMessagePowerComp = default(0);
+        int sendMessageDelayCloud = default(0);
+        int sendMessageDelayComp = default(0);
+        int receiveMessageDelayCloud = default(0);
+        int receiveMessageDelayComp = default(0);
     gates:
         inout gate[1];
 }
@@ -40,6 +56,14 @@ simple Cloud
 {
     parameters:
         @display("i=misc/cloud"); // add a default icon
+        int sendMessagePowerSmart = default(0);
+        int sendMessagePowerComputer = default(0);
+        int receiveMessagePowerSmart = default(0);
+        int receiveMessagePowerComputer = default(0);
+        int sendMessageDelaySmart = default(0);
+        int sendMessageDelayComputer = default(0);
+        int receiveMessageDelaySmart = default(0);
+        int receiveMessageDelayComputer = default(0);
     gates:
         inout gate[1];
 }
@@ -133,7 +157,7 @@ network edgeComputingNetwork
         cloud: Cloud {
             @display("p=1200,100;r=480");
         }
-        host: MobileHost {
+        host[1]: MobileHost {
             @display("p=800,500;r=70");
         }
         computer: Computer {
