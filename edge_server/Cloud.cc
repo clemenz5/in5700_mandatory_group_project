@@ -13,7 +13,8 @@ private:
     int numReceivedComp;
     int sendMessagePower[2];
     int receiveMessagePower[2];
-    int messageDelay;
+    int sendMessageDelay[2];
+    int receiveMessageDelay[2];
 
     cLabelFigure* total_num_cloud;
     cLabelFigure* total_power_cloud_to_smart;
@@ -45,13 +46,17 @@ void Cloud::initialize() {
     numReceivedComp = 0;
     numReceivedSmart = 0;
 
-    sendMessagePower[0] = 210;
-    sendMessagePower[1] = 130;
+    sendMessagePower[0] = par("sendMessagePowerSmart").intValue();
+    sendMessagePower[1] = par("sendMessagePowerComputer").intValue();
 
-    receiveMessagePower[0] = 280;
-    receiveMessagePower[1] = 330;
+    receiveMessagePower[0] = par("receiveMessagePowerSmart").intValue();
+    receiveMessagePower[1] = par("receiveMessagePowerComputer").intValue();
 
-    messageDelay = 120;
+    sendMessageDelay[0] = par("sendMessageDelaySmart").intValue();
+    sendMessageDelay[1] = par("sendMessageDelayComputer").intValue();
+
+    receiveMessageDelay[0] = par("receiveMessageDelaySmart").intValue();
+    receiveMessageDelay[1] = par("receiveMessageDelayComputer").intValue();
 
     cCanvas* canvas = this->getParentModule()->getCanvas();
 
@@ -106,14 +111,14 @@ void Cloud::updateLabels(){
     sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*receiveMessagePower[1]);
     total_power_rcvd_cloud_to_comp->setText(temp);
 
-    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart*messageDelay);
+    sprintf(temp, "cloud (from cloud to smartphone)= %d", numSentSmart*sendMessageDelay[0]);
     total_delay_cloud_to_smart->setText(temp);
-    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*messageDelay);
+    sprintf(temp, "cloud (from cloud to comp)= %d", numSentComp*sendMessageDelay[1]);
     total_delay_cloud_to_comp->setText(temp);
 
-    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart*messageDelay);
+    sprintf(temp, "cloud (from cloud to smartphone)= %d", numReceivedSmart*receiveMessageDelay[0]);
     total_delay_rcvd_cloud_to_smart->setText(temp);
-    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*messageDelay);
+    sprintf(temp, "cloud (from cloud to comp)= %d", numReceivedComp*receiveMessageDelay[1]);
     total_delay_rcvd_cloud_to_comp->setText(temp);
 }
 
