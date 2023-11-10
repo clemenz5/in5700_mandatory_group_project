@@ -5,7 +5,7 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 
 module MobileHost  {
     parameters:
-        bool left = default(false);
+        bool left = default(false); // Flag indicating whether the book is in the left-hand shelf
         @display("i=device/pocketpc"); // add a default icon
 	gates:
 	    inout gate[2];
@@ -72,7 +72,7 @@ simple Cloud
 
 network cloudComputingNetwork
 {
-    
+    // Setup graphical figures and labels
     
     @display("bgb=1300,700");
     @figure[entry_exit](type=text; pos=760,550; text=entry/exit);
@@ -133,7 +133,6 @@ network cloudComputingNetwork
     @figure[Library.label_f1](type=text; pos=675,526; text=F);
     
     @figure[Pillar2](type=rectangle; pos=890,300; size=20,250; fillColor=black; fillOpacity=1);
-    //@figure[Pillar2.label](type=text; pos=510,210; text=Library);
     @figure[Library.label_p2](type=text; pos=896,310; text=P; zIndex=10;color=white);
     @figure[Library.label_i2](type=text; pos=896,353; text=I; zIndex=10;color=white);
     @figure[Library.label_l5](type=text; pos=896,396; text=L; zIndex=10;color=white);

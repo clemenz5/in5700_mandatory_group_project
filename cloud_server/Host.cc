@@ -5,17 +5,22 @@ using namespace omnetpp;
 
 class Host : public cSimpleModule {
    private:
-    int numDropped;
-    bool left;
-    char displayString[20];
-    int numSentCloud;
-    int numSentComp;
-    int numReceivedCloud;
-    int numReceivedComp;
-    int sendMessagePower[2];
-    int receiveMessagePower[2];
-    int sendMessageDelay[2];
-    int receiveMessageDelay[2];
+    int numDropped;          // Number of dropped messages.
+    bool left;               // Flag indicating whether the book is in the left-hand shelf
+    char displayString[20];  // Buffer for display strings on the simulation canvas.
+    int numSentCloud;        // Count of messages sent to the cloud.
+    int numSentComp;         // Count of messages sent to computer.
+    int numReceivedCloud;    // Count of messages received from the cloud.
+    int numReceivedComp;     // Count of messages received from computer.
+
+    // Arrays for power consumption and delay values, with two members each:
+    // [0] - for cloud, [1] - for computer
+    int sendMessagePower[2];     // Power consumption values for sending messages
+    int receiveMessagePower[2];  // Power consumption values for receiving messages
+    int sendMessageDelay[2];     // Delay times for sending messages
+    int receiveMessageDelay[2];  // Delay times for receiving messages
+
+    // Pointers to label figures for displaying statistics on the simulation canvas
     cLabelFigure* total_num_smartphone;
     cLabelFigure* total_power_smart_to_cloud;
     cLabelFigure* total_power_smart_to_comp;
@@ -45,6 +50,10 @@ void Host::initialize() {
     numReceivedComp = 0;
     numReceivedCloud = 0;
 
+    // Initialize power and delay values from the simulation configuration.
+    left = this->getParentModule()->par("left").boolValue();
+
+    // The array index [0] corresponds to cloud and [1] to computer.
     sendMessagePower[0] = par("sendMessagePowerCloud").intValue();
     sendMessagePower[1] = par("sendMessagePowerComp").intValue();
 
@@ -57,10 +66,11 @@ void Host::initialize() {
     receiveMessageDelay[0] = par("receiveMessageDelayCloud").intValue();
     receiveMessageDelay[1] = par("receiveMessageDelayComp").intValue();
 
-    left = this->getParentModule()->par("left").boolValue();
+    // Schedule self-messages for simulating specific actions.
     scheduleAt(simTime() + 38.0, new cMessage("browseBook"));
     scheduleAt(simTime() + 57.0, new cMessage("payBook"));
 
+    // Initialize canvas for displaying statistics.
     cCanvas* canvas = this->getParentModule()->getParentModule()->getCanvas();
     total_num_smartphone = (cLabelFigure*)(canvas->getFigure("total_num_smartphone"));
 
@@ -73,12 +83,13 @@ void Host::initialize() {
     total_delay_smart_to_comp = (cLabelFigure*)(canvas->getFigure("total_delay_smart_to_comp"));
     total_delay_rcvd_smart_to_cloud = (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_smart_to_cloud"));
     total_delay_rcvd_smart_to_comp = (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_smart_to_comp"));
-    updateLabels();
+
+    updateLabels();  // Update the labels initially
 }
 
 void Host::handleMessage(cMessage* msg) {
     if (!msg->isSelfMessage()) {
-        if (msg->getArrivalGateId() == 1048576) {
+        if (msg->getArrivalGateId() == 1048576) {  // Message from cloud
             numReceivedCloud++;
         } else {
             numReceivedComp++;
@@ -87,9 +98,11 @@ void Host::handleMessage(cMessage* msg) {
     }
 
     if (strcmp(msg->getName(), "3- Cloud ready to start") == 0 && numDropped < 5) {
+        // Simulate message loss
         this->getParentModule()->bubble("Message Lost");
         numDropped++;
     } else if (strcmp(msg->getName(), "3- Cloud ready to start") == 0 && numDropped >= 5) {
+        // Simulate message receival
         send(new ComputerMsg("4- ACK"), "gate$o", 0);
         send(new ComputerMsg("5- Where is the book I am looking for?"),
              "gate$o", 0);
@@ -113,7 +126,7 @@ void Host::updateLabels() {
                                                           displayString);
 
     char temp[80];
-    sprintf(temp, "Total number of messages sent/received by the smartphone= %d", numSentComp + numSentCloud + numReceivedComp + numReceivedCloud-numDropped);
+    sprintf(temp, "Total number of messages sent/received by the smartphone= %d", numSentComp + numSentCloud + numReceivedComp + numReceivedCloud - numDropped);
     total_num_smartphone->setText(temp);
     sprintf(temp, "smartphone (from smartphone to cloud)= %d", numSentCloud * sendMessagePower[0]);
     total_power_smart_to_cloud->setText(temp);
@@ -130,7 +143,7 @@ void Host::updateLabels() {
     sprintf(temp, "smartphone (from smartphone to comp)= %d", numSentComp * sendMessageDelay[1]);
     total_delay_smart_to_comp->setText(temp);
 
-    sprintf(temp, "smartphone (from smartphone to cloud)= %d", (numReceivedCloud-numDropped) * receiveMessageDelay[0]);
+    sprintf(temp, "smartphone (from smartphone to cloud)= %d", (numReceivedCloud - numDropped) * receiveMessageDelay[0]);
     total_delay_rcvd_smart_to_cloud->setText(temp);
     sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * receiveMessageDelay[1]);
     total_delay_rcvd_smart_to_comp->setText(temp);
@@ -143,7 +156,8 @@ void Host::send(cMessage* msg, const char* gatename, int gateindex) {
     } else {
         numSentComp++;
     }
-    updateLabels();
+
+    updateLabels();  // Update labels after sending a message.
 }
 
 void Host::finish() {

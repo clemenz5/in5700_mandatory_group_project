@@ -5,7 +5,7 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 
 module MobileHost  {
     parameters:
-        bool left = default(false);
+        bool left = default(false); // Flag indicating whether the book is in the left-hand shelf
         @display("i=device/pocketpc"); // add a default icon
 	gates:
 	    inout gate[1];
@@ -73,6 +73,8 @@ network edgeComputingNetwork
 {
     
     
+    // Setup graphical figures and labels
+
     @display("bgb=1300,700");
     @figure[entry_exit](type=text; pos=760,550; text=entry/exit);
     
@@ -114,7 +116,9 @@ network edgeComputingNetwork
     
     
     @figure[Library](type=rectangle; pos=500,200; size=600,350; fillColor=gray; fillOpacity=0.2; zIndex=1);
-    //@figure[Library.label](type=text; pos=510,210; text=Library);
+    @figure[Library.label](type=text; pos=510,210; text=Library);
+
+    @figure[Pillar1](type=rectangle; pos=700,300; size=20,250; fillColor=black; fillOpacity=1);
     @figure[Library.label_p1](type=text; pos=705,310; text=P; zIndex=10;color=white);
     @figure[Library.label_i1](type=text; pos=705,353; text=I; zIndex=10;color=white);
     @figure[Library.label_l3](type=text; pos=705,396; text=L; zIndex=10;color=white);
@@ -122,10 +126,7 @@ network edgeComputingNetwork
     @figure[Library.label_a1](type=text; pos=705,482; text=A; zIndex=10;color=white);
     @figure[Library.label_r1](type=text; pos=705,526; text=R; zIndex=10;color=white);
     
-    @figure[Pillar1](type=rectangle; pos=700,300; size=20,250; fillColor=black; fillOpacity=1);
-    @figure[Pillar1.label](type=text; pos=510,210; text=Library);
     @figure[Shelf1](type=rectangle; pos=660,300; size=40,250; fillColor=white; fillOpacity=0.8);
-    //@figure[Shelf1.label](type=text; pos=510,210; text=Library);
     @figure[Library.label_s1](type=text; pos=675,310; text=S; zIndex=10);
     @figure[Library.label_h1](type=text; pos=675,364; text=H);
     @figure[Library.label_e1](type=text; pos=675,418; text=E);
@@ -134,20 +135,21 @@ network edgeComputingNetwork
     
     
     @figure[Pillar2](type=rectangle; pos=890,300; size=20,250; fillColor=black; fillOpacity=1);
-    @figure[Pillar2.label](type=text; pos=510,210; text=Library);
     @figure[Library.label_p2](type=text; pos=896,310; text=P; zIndex=10;color=white);
     @figure[Library.label_i2](type=text; pos=896,353; text=I; zIndex=10;color=white);
     @figure[Library.label_l5](type=text; pos=896,396; text=L; zIndex=10;color=white);
     @figure[Library.label_l6](type=text; pos=896,439; text=L; zIndex=10;color=white);
     @figure[Library.label_a2](type=text; pos=896,482; text=A; zIndex=10;color=white);
     @figure[Library.label_r2](type=text; pos=896,526; text=R; zIndex=10;color=white);
+
     @figure[Shelf2](type=rectangle; pos=910,300; size=40,250; fillColor=white; fillOpacity=0.8);
-    //@figure[Shelf2.label](type=text; pos=510,210; text=Library);
     @figure[Library.label_s2](type=text; pos=923,310; text=S; zIndex=10);
     @figure[Library.label_h2](type=text; pos=923,364; text=H);
     @figure[Library.label_e2](type=text; pos=923,418; text=E);
     @figure[Library.label_l2](type=text; pos=923,472; text=L);
     @figure[Library.label_f2](type=text; pos=923,526; text=F);
+
+
     types:
         channel Channel extends ned.DelayChannel
         {
@@ -167,7 +169,7 @@ network edgeComputingNetwork
             @display("p=50,50");
         }
 
-    connections allowunconnected:
+    connections:
 	    computer.gate[0] <--> Channel <--> host[0].gate[0];
         computer.gate[1] <--> Channel <--> cloud.gate[0];
 }
