@@ -168,6 +168,6 @@ network edgeComputingNetwork
         }
 
     connections allowunconnected:
-	    computer.gate[0] <--> Channel <--> host.gate[0];
+	    computer.gate[0] <--> Channel <--> host[0].gate[0];
         computer.gate[1] <--> Channel <--> cloud.gate[0];
 }
