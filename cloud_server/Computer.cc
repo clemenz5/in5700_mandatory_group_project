@@ -5,17 +5,21 @@ using namespace omnetpp;
 
 class Computer : public cSimpleModule {
    private:
-    char displayString[20];
-    int numSentCloud;
-    int numSentSmart;
-    int numReceivedCloud;
-    int numReceivedSmart;
-    int sendMessagePower[2];
-    int receiveMessagePower[2];
-    int sendMessageDelay[2];
-    int receiveMessageDelay[2];
-    cLabelFigure* total_num_comp;
+    char displayString[20];  // Buffer for creating display strings on the simulation canvas
+    int numSentCloud;        // Number of messages sent to the cloud
+    int numSentSmart;        // Number of messages sent to smartphone
+    int numReceivedCloud;    // Number of messages received from the cloud
+    int numReceivedSmart;    // Number of messages received from smartphone
 
+    // Arrays for power consumption and delay values, with two members each:
+    // [0] - for cloud, [1] - for the smartphone
+    int sendMessagePower[2];     // Power consumption values for sending messages
+    int receiveMessagePower[2];  // Power consumption values for receiving messages
+    int sendMessageDelay[2];     // Delay times for sending messages
+    int receiveMessageDelay[2];  // Delay times for receiving messages
+
+    // Pointers to label figures for displaying statistics on the simulation canvas
+    cLabelFigure* total_num_comp;
     cLabelFigure* total_power_comp_to_cloud;
     cLabelFigure* total_power_comp_to_smart;
     cLabelFigure* total_power_rcvd_comp_to_smart;
@@ -43,20 +47,24 @@ void Computer::initialize() {
     numReceivedSmart = 0;
     numReceivedCloud = 0;
 
-    sendMessagePower[0] = par("sendMessagePowerSmart").intValue();
-    sendMessagePower[1] = par("sendMessagePowerCloud").intValue();
+    // Initialize power and delay values from the simulation configuration.
+    // The array index [0] corresponds to cloud and [1] to smartphone.
+    sendMessagePower[0] = par("sendMessagePowerCloud").intValue();
+    sendMessagePower[1] = par("sendMessagePowerSmart").intValue();
 
-    receiveMessagePower[0] = par("receiveMessagePowerSmart").intValue();
-    receiveMessagePower[1] = par("receiveMessagePowerCloud").intValue();
+    receiveMessagePower[0] = par("receiveMessagePowerCloud").intValue();
+    receiveMessagePower[1] = par("receiveMessagePowerSmart").intValue();
 
-    sendMessageDelay[0] = par("sendMessageDelaySmart").intValue();
-    sendMessageDelay[1] = par("sendMessageDelayCloud").intValue();
+    sendMessageDelay[0] = par("sendMessageDelayCloud").intValue();
+    sendMessageDelay[1] = par("sendMessageDelaySmart").intValue();
 
-    receiveMessageDelay[0] = par("receiveMessageDelaySmart").intValue();
-    receiveMessageDelay[1] = par("receiveMessageDelayCloud").intValue();
+    receiveMessageDelay[0] = par("receiveMessageDelayCloud").intValue();
+    receiveMessageDelay[1] = par("receiveMessageDelaySmart").intValue();
 
+    // Initialize canvas for displaying statistics
     cCanvas* canvas = this->getParentModule()->getCanvas();
 
+    // Setting up the labels for the statistics
     total_num_comp = (cLabelFigure*)(canvas->getFigure("total_num_comp"));
 
     total_power_comp_to_cloud = (cLabelFigure*)(canvas->getFigure("total_power_comp_to_cloud"));
@@ -68,19 +76,22 @@ void Computer::initialize() {
     total_delay_comp_to_cloud = (cLabelFigure*)(canvas->getFigure("total_delay_comp_to_cloud"));
     total_delay_rcvd_comp_to_smart = (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_comp_to_smart"));
     total_delay_rcvd_comp_to_cloud = (cLabelFigure*)(canvas->getFigure("total_delay_rcvd_comp_to_cloud"));
+
+    // Sending initial message
     send(new ComputerMsg("1- Contents of Book Table"), "gate$o", 0);
 }
 
 void Computer::handleMessage(cMessage* msg) {
     if (!msg->isSelfMessage()) {
-        EV << msg->getArrivalGateId();
-        if (msg->getArrivalGateId() == 1048576) {
+        if (msg->getArrivalGateId() == 1048576) {  // Message from cloud
             numReceivedCloud++;
         } else {
             numReceivedSmart++;
         }
         updateLabels();
     }
+
+    // Handle specific messages and respond with ACKs as needed.
     if (strcmp(msg->getName(), "10- Pay the Book") == 0) {
         send(new ComputerMsg("11- ACK"), "gate$o", 1);
         send(new ComputerMsg("12- Book payed"), "gate$o", 1);
@@ -89,6 +100,7 @@ void Computer::handleMessage(cMessage* msg) {
 }
 
 void Computer::updateLabels() {
+    // Update the display labels with current statistics.
     sprintf(displayString, "sent:%d rcvd:%d", numSentSmart + numSentCloud, numReceivedSmart + numReceivedCloud);
     this->getDisplayString().setTagArg("t", 0,
                                        displayString);
@@ -97,28 +109,29 @@ void Computer::updateLabels() {
     sprintf(temp, "Total number of messages sent/received by the computer= %d", numSentSmart + numSentCloud + numReceivedSmart + numReceivedCloud);
     total_num_comp->setText(temp);
 
-    sprintf(temp, "computer (from computer to cloud)= %d", numSentCloud * sendMessagePower[1]);
+    sprintf(temp, "computer (from computer to cloud)= %d", numSentCloud * sendMessagePower[0]);
     total_power_comp_to_cloud->setText(temp);
-    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessagePower[0]);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessagePower[1]);
     total_power_comp_to_smart->setText(temp);
 
-    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * receiveMessagePower[0]);
-    total_power_rcvd_comp_to_smart->setText(temp);
-    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * receiveMessagePower[1]);
+    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * receiveMessagePower[0]);
     total_power_rcvd_comp_to_cloud->setText(temp);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * receiveMessagePower[1]);
+    total_power_rcvd_comp_to_smart->setText(temp);
 
-    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessageDelay[0]);
-    total_delay_comp_to_smart->setText(temp);
-    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * sendMessageDelay[1]);
+    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * sendMessageDelay[0]);
     total_delay_comp_to_cloud->setText(temp);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numSentSmart * sendMessageDelay[1]);
+    total_delay_comp_to_smart->setText(temp);
 
-    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * receiveMessageDelay[0]);
-    total_delay_rcvd_comp_to_smart->setText(temp);
-    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * receiveMessageDelay[1]);
+    sprintf(temp, "computer (from computer to cloud)= %d", numReceivedCloud * receiveMessageDelay[0]);
     total_delay_rcvd_comp_to_cloud->setText(temp);
+    sprintf(temp, "computer (from computer to smartphone)= %d", numReceivedSmart * receiveMessageDelay[1]);
+    total_delay_rcvd_comp_to_smart->setText(temp);
 }
 
 void Computer::send(cMessage* msg, const char* gatename, int gateindex) {
+    // Update the sent message counters based on the gate index.
     cSimpleModule::send(msg, gatename, gateindex);
     if (gateindex == 0) {
         numSentCloud++;
