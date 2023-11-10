@@ -113,7 +113,7 @@ void Host::updateLabels() {
                                                           displayString);
 
     char temp[80];
-    sprintf(temp, "Total number of messages sent/received by the smartphone= %d", numSentComp + numSentCloud + numReceivedComp + numReceivedCloud);
+    sprintf(temp, "Total number of messages sent/received by the smartphone= %d", numSentComp + numSentCloud + numReceivedComp + numReceivedCloud-numDropped);
     total_num_smartphone->setText(temp);
     sprintf(temp, "smartphone (from smartphone to cloud)= %d", numSentCloud * sendMessagePower[0]);
     total_power_smart_to_cloud->setText(temp);
@@ -130,7 +130,7 @@ void Host::updateLabels() {
     sprintf(temp, "smartphone (from smartphone to comp)= %d", numSentComp * sendMessageDelay[1]);
     total_delay_smart_to_comp->setText(temp);
 
-    sprintf(temp, "smartphone (from smartphone to cloud)= %d", numReceivedCloud * receiveMessageDelay[0]);
+    sprintf(temp, "smartphone (from smartphone to cloud)= %d", (numReceivedCloud-numDropped) * receiveMessageDelay[0]);
     total_delay_rcvd_smart_to_cloud->setText(temp);
     sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * receiveMessageDelay[1]);
     total_delay_rcvd_smart_to_comp->setText(temp);

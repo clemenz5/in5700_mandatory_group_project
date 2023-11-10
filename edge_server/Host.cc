@@ -135,7 +135,7 @@ void Host::updateLabels(){
 
     sprintf(temp, "smartphone (from smartphone to cloud)= %d", numReceivedCloud * receiveMessageDelay[0]);
     total_delay_rcvd_smart_to_cloud->setText(temp);
-    sprintf(temp, "smartphone (from smartphone to comp)= %d", numReceivedComp * receiveMessageDelay[1]);
+    sprintf(temp, "smartphone (from smartphone to comp)= %d", (numReceivedComp-numDropped) * receiveMessageDelay[1]);
     total_delay_rcvd_smart_to_comp->setText(temp);
 }
 
